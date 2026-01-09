@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/09 15:42:14 by maria-ol          #+#    #+#             */
+/*   Updated: 2026/01/09 16:08:06 by maria-ol         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -66,17 +78,17 @@ int		ft_atoi(const char *str);
 void	print_status(t_philo *philo, char *status);
 
 // Routine
-void	*philo_routine(void *arg);
+// void	*philo_routine(void *arg);
 
 // Actions
-void	philo_eat(t_philo *philo);
-void	philo_sleep(t_philo *philo);
-void	philo_think(t_philo *philo);
+// void	philo_eat(t_philo *philo);
+// void	philo_sleep(t_philo *philo);
+// void	philo_think(t_philo *philo);
 
 // Monitor
-void	*monitor_routine(void *arg);
-bool	check_death(t_data *data);
-bool	check_all_ate(t_data *data);
+// void	*monitor_routine(void *arg);
+// bool	check_death(t_data *data);
+// bool	check_all_ate(t_data *data);
 
 // Cleanup
 void	cleanup(t_data *data);

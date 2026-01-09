@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:45:44 by mona              #+#    #+#             */
-/*   Updated: 2026/01/07 15:06:37 by mona             ###   ########.fr       */
+/*   Updated: 2026/01/09 16:05:22 by maria-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**
+ * @brief Initialize the shared data structure.
+ *
+ * This function parses command-line arguments and initializes the
+ * shared data structure with simulation parameters. It sets the
+ * number of philosophers, timing values (time_to_die, time_to_eat,
+ * time_to_sleep), and optionally the minimum number of meals each
+ * philosopher must eat. It also initializes control flags and sets
+ * pointer fields to NULL.
+ *
+ * @param data Pointer to the data structure to be initialized.
+ * @param ac Number of command-line arguments.
+ * @param av Array of command-line argument strings.
+ * @return Always returns 0.
+ */
 int	init_data(t_data *data, int ac, char **av)
 {
 	data->num_philos = ft_atoi(av[1]);
@@ -29,6 +44,19 @@ int	init_data(t_data *data, int ac, char **av)
 	return (0);
 }
 
+/**
+ * @brief Initialize all mutexes for the simulation.
+ *
+ * This function creates and initializes all mutexes required for the
+ * simulation. It initializes three global mutexes (print_mutex,
+ * death_mutex, meal_mutex) and allocates an array of fork mutexes,
+ * one for each philosopher. Each fork mutex is then initialized.
+ * Returns an error code if any initialization fails.
+ *
+ * @param data Pointer to the shared data structure where mutexes
+ *             will be initialized.
+ * @return 0 on success, 1 on failure.
+ */
 int	init_mutexes(t_data *data)
 {
 	int	i;
@@ -52,6 +80,20 @@ int	init_mutexes(t_data *data)
 	return (0);
 }
 
+/**
+ * @brief Initialize all philosopher structures.
+ *
+ * This function allocates memory for the philosophers array and
+ * initializes each philosopher structure. It assigns a unique ID,
+ * sets initial meal count to 0, assigns left and right fork pointers
+ * using circular indexing, and links each philosopher to the shared
+ * data structure. The right fork uses modulo arithmetic to wrap
+ * around for the last philosopher.
+ *
+ * @param data Pointer to the shared data structure containing
+ *             philosopher array to be initialized.
+ * @return 0 on success, 1 on failure.
+ */
 int	init_philos(t_data *data)
 {
 	int	i;

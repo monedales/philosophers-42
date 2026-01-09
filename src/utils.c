@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:47:13 by mona              #+#    #+#             */
-/*   Updated: 2026/01/07 15:10:41 by mona             ###   ########.fr       */
+/*   Updated: 2026/01/09 15:46:59 by maria-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+/**
+ * @brief Get current time in milliseconds.
+ *
+ * This function retrieves the current time using gettimeofday and
+ * converts it to milliseconds. The returned value represents the
+ * number of milliseconds since the Unix epoch (January 1, 1970).
+ *
+ * @return Current time in milliseconds as a long integer.
+ */
 long	get_time(void)
 {
 	struct timeval	tv;
@@ -20,6 +29,19 @@ long	get_time(void)
 	return ((tv.tv_sec * 1000 + tv.tv_usec / 1000));
 }
 
+/**
+ * @brief Precise sleep with death check.
+ *
+ * This function implements a precise sleep mechanism that continuously
+ * checks if any philosopher has died during the sleep period. It uses
+ * small intervals of usleep (500 microseconds) to maintain
+ * responsiveness while sleeping for the specified duration. The
+ * function will exit early if someone_died flag is set to true.
+ *
+ * @param milliseconds The duration to sleep in milliseconds.
+ * @param data Pointer to the shared data structure containing
+ *             death_mutex and someone_died flag.
+ */
 void	precise_sleep(long milliseconds, t_data *data)
 {
 	long	start;
@@ -42,23 +64,18 @@ void	precise_sleep(long milliseconds, t_data *data)
 	}
 }
 
-void	print_status(t_philo *philo, char *status)
-{
-	long	timestamp;
-
-	pthread_mutex_lock(&philo->data->death_mutex);
-	if (philo->data->someone_died)
-	{
-		pthread_mutex_unlock(&philo->data->death_mutex);
-		return ;
-	}
-	pthread_mutex_unlock(&philo->data->death_mutex);
-	pthread_mutex_lock(&philo->data->print_mutex);
-	timestamp = get_time() - philo->data->start_time;
-	printf("%ld %d %s\n", timestamp, philo->id, status);
-	pthread_mutex_unlock(&philo->data->print_mutex);
-}
-
+/**
+ * @brief Handle and display error messages.
+ *
+ * This function takes an error code from the t_error enum and displays
+ * the corresponding error message to the standard output. It uses a
+ * static array of error messages indexed by the error code. The
+ * function always returns 1 to indicate an error occurred.
+ *
+ * @param error The error code from the t_error enum indicating the
+ *              type of error.
+ * @return Always returns 1 to indicate an error condition.
+ */
 int	handle_error(t_error error)
 {
 	static const char	*messages[] = {
@@ -81,18 +98,17 @@ int	handle_error(t_error error)
 	return (1);
 }
 
-
 /**
  * @brief Check if a character is a whitespace.
  *
- * This function returns 1 if the given character is a whitespace character 
- * (space, tab, newline, vertical tab, form feed, or carriage return).
- * Otherwise, it returns 0.
+ * This function returns 1 if the given character is a whitespace
+ * character (space, tab, newline, vertical tab, form feed, or
+ * carriage return). Otherwise, it returns 0.
  *
  * @param chr The character to check.
  * @return 1 if the character is a whitespace, 0 otherwise.
  */
-int	ft_isspace(int chr)
+static int	ft_isspace(int chr)
 {
 	if ((chr >= 9 && chr <= 13) || chr == 32)
 		return (1);
@@ -102,13 +118,14 @@ int	ft_isspace(int chr)
 /**
  * @brief Convert a string to a integer
  *
- * This function converts the initial portion of the string pointed to by 'str' 
- * to int. The beggining of 'str' may contain whitespace characters followed by
- * a single optional '+' or '-' sign. After a digit is found the conversion 
- * continues until a non-digit character is encountered.
- * 
+ * This function converts the initial portion of the string pointed to
+ * by 'str' to int. The beggining of 'str' may contain whitespace
+ * characters followed by a single optional '+' or '-' sign. After a
+ * digit is found the conversion continues until a non-digit character
+ * is encountered.
  *
- * @param str Pointer to a string containing a representation of a whole number.
+ * @param str Pointer to a string containing a representation of a
+ *            whole number.
  * @return An int value containing the converted 'str' or 0 on error.
  */
 int	ft_atoi(const char *str)
@@ -135,4 +152,3 @@ int	ft_atoi(const char *str)
 	}
 	return (result * sign);
 }
-
