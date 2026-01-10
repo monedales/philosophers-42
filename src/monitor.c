@@ -6,7 +6,7 @@
 /*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:46:13 by maria-ol          #+#    #+#             */
-/*   Updated: 2026/01/09 20:44:16 by maria-ol         ###   ########.fr       */
+/*   Updated: 2026/01/09 21:28:02 by maria-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ bool	check_death(t_data *data)
 {
 	long	last_meal;
 	long	current_time;
-	long	time_since_meal;
 	int		i;
 
 	i = 0;
@@ -70,8 +69,7 @@ bool	check_death(t_data *data)
 		pthread_mutex_lock(&data->meal_mutex);
 		last_meal = data->philos[i].last_meal_time;
 		pthread_mutex_unlock(&data->meal_mutex);
-		time_since_meal = current_time - last_meal;
-		if (time_since_meal >= data->time_to_die)
+		if ((current_time - last_meal) >= data->time_to_die)
 		{
 			pthread_mutex_lock(&data->death_mutex);
 			data->someone_died = true;
