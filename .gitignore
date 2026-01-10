@@ -10,6 +10,7 @@ libft/*.a
 
 # Personal explanation files (keep local)
 subject/
+guides/
 
 # Test scripts
 *.sh
