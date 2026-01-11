@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:40:28 by maria-ol          #+#    #+#             */
-/*   Updated: 2026/01/09 18:04:14 by maria-ol         ###   ########.fr       */
+/*   Updated: 2026/01/11 18:28:38 by mona             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
  * @brief Take forks in the correct order to prevent deadlock.
  *
  * Philosophers with even IDs take right fork first, odd IDs take
- * left fork first. This breaks the circular dependency.
+ * left fork first. A small delay after taking forks helps prevent
+ * starvation in edge cases.
  *
  * @param philo Pointer to the philosopher structure.
  */
@@ -28,6 +29,7 @@ static void	take_forks(t_philo *philo)
 		print_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
 		print_status(philo, "has taken a fork");
+		usleep(100);
 	}
 	else
 	{
@@ -35,6 +37,7 @@ static void	take_forks(t_philo *philo)
 		print_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
 		print_status(philo, "has taken a fork");
+		usleep(1);
 	}
 }
 
@@ -104,14 +107,25 @@ void	philo_sleep(t_philo *philo)
  * @brief Philosopher thinking action.
  *
  * This function implements the thinking action for a philosopher.
- * The philosopher simply prints their thinking status. No sleep is
- * needed here as philosophers think while waiting for forks to
- * become available, which naturally creates the thinking time.
+ * For odd numbers of philosophers, a small thinking delay is added
+ * to prevent starvation.
  *
  * @param philo Pointer to the philosopher structure performing
  *              the thinking action.
  */
 void	philo_think(t_philo *philo)
 {
+	long	think_time;
+
 	print_status(philo, "is thinking");
+	if (philo->data->num_philos % 2 != 0)
+	{
+		think_time = philo->data->time_to_eat * 2 - philo->data->time_to_sleep;
+		if (think_time < 0)
+			think_time = 0;
+		if (think_time > 600)
+			think_time = 200;
+		if (think_time > 0)
+			usleep(think_time * 1000);
+	}
 }

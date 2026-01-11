@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:45:24 by mona              #+#    #+#             */
-/*   Updated: 2026/01/09 15:59:50 by maria-ol         ###   ########.fr       */
+/*   Updated: 2026/01/11 18:33:48 by mona             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,18 @@ static int	start_simulation(t_data *data)
 	int			i;
 	pthread_t	monitor;
 
-	i = 0;
 	data->start_time = get_time();
+	pthread_mutex_lock(&data->meal_mutex);
+	i = 0;
 	while (i < data->num_philos)
 	{
 		data->philos[i].last_meal_time = data->start_time;
+		i++;
+	}
+	pthread_mutex_unlock(&data->meal_mutex);
+	i = 0;
+	while (i < data->num_philos)
+	{
 		if (pthread_create(&data->philos[i].thread, NULL,
 				philo_routine, &data->philos[i]))
 			return (handle_error(ERR_PHILO_THREAD));
