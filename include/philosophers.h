@@ -6,7 +6,7 @@
 /*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:42:14 by maria-ol          #+#    #+#             */
-/*   Updated: 2026/01/12 18:56:13 by mona             ###   ########.fr       */
+/*   Updated: 2026/01/12 19:50:43 by mona             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <stdbool.h>
+
+# define MONITOR_CHECK_INTERVAL 500
+# define SLEEP_CHECK_INTERVAL 500
+# define INT_MAX_VALUE 2147483647
 
 typedef enum e_error
 {
