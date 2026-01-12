@@ -6,7 +6,7 @@
 /*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:46:13 by maria-ol          #+#    #+#             */
-/*   Updated: 2026/01/11 18:28:38 by mona             ###   ########.fr       */
+/*   Updated: 2026/01/12 19:01:57 by mona             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	*monitor_routine(void *arg)
 			break ;
 		if (check_all_ate(data) == true)
 			break ;
-		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
 }
