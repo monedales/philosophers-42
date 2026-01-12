@@ -6,7 +6,7 @@
 /*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:45:24 by mona              #+#    #+#             */
-/*   Updated: 2026/01/11 18:33:48 by mona             ###   ########.fr       */
+/*   Updated: 2026/01/12 18:56:13 by mona             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,20 @@
  */
 static int	validate_args(int argc, char **argv)
 {
-	int	i;
+	int		i;
+	long	value;
 
 	if (argc < 5 || argc > 6)
 		return (handle_error(ERR_ARGS));
 	i = 1;
 	while (i < argc)
 	{
-		if (ft_atoi(argv[i]) <= 0)
+		if (!is_valid_number(argv[i]))
+			return (handle_error(ERR_INVALID_FORMAT));
+		value = ft_atol(argv[i]);
+		if (value > 2147483647)
+			return (handle_error(ERR_NO_LONG));
+		if (value <= 0)
 			return (handle_error(ERR_POSITIVE));
 		i++;
 	}

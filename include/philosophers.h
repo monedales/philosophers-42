@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 15:42:14 by maria-ol          #+#    #+#             */
-/*   Updated: 2026/01/09 18:35:47 by maria-ol         ###   ########.fr       */
+/*   Updated: 2026/01/12 18:56:13 by mona             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@
 typedef enum e_error
 {
 	ERR_ARGS = 1,
+	ERR_INVALID_FORMAT,
 	ERR_POSITIVE,
+	ERR_NO_LONG,
+	ERR_ONE_PHILO,
 	ERR_INIT_GMUTEX,
 	ERR_INIT_FMUTEX,
 	ERR_ALOC,
-	ERR_NOEAT,
 	ERR_PHILO_THREAD,
-	ERR_MONIT_THREAD,
-	ERR_NO_LONG
+	ERR_MONIT_THREAD
 }				t_error;
 
 typedef struct s_data	t_data;
@@ -75,6 +76,8 @@ int		init_philos(t_data *data);
 long	get_time(void);
 void	precise_sleep(long milliseconds, t_data *data);
 int		ft_atoi(const char *str);
+long	ft_atol(const char *str);
+int		is_valid_number(const char *str);
 void	print_status(t_philo *philo, char *status);
 
 // Routine
