@@ -40,6 +40,7 @@ SRC := philosophers.c \
        actions.c \
        monitor.c \
        utils.c \
+       parsing.c \
        cleanup.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
