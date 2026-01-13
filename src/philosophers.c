@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mona <mona@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: maria-ol <maria-ol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 13:45:24 by mona              #+#    #+#             */
-/*   Updated: 2026/01/12 19:50:43 by mona             ###   ########.fr       */
+/*   Updated: 2026/01/13 18:08:29 by maria-ol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,38 @@ static int	validate_args(int argc, char **argv)
 }
 
 /**
+ * @brief Initialize synchronized meal timestamps for all philosophers.
+ *
+ * This function performs a critical synchronized initialization by
+ * setting the simulation start time and initializing all philosophers'
+ * last_meal_time to this exact timestamp. This ensures all philosophers
+ * begin with the same time reference, preventing race conditions where
+ * the monitor could detect false deaths if timestamps were initialized
+ * individually by each thread. The meal_mutex protects this atomic
+ * operation, guaranteeing all timestamps are set before any philosopher
+ * thread starts checking for starvation.
+ *
+ * @param data Pointer to the shared data structure containing all
+ *             simulation parameters and philosopher information.
+ * @return 0 on success.
+ */
+static int	meal_simulation(t_data *data)
+{
+	int			i;
+
+	data->start_time = get_time();
+	pthread_mutex_lock(&data->meal_mutex);
+	i = 0;
+	while (i < data->num_philos)
+	{
+		data->philos[i].last_meal_time = data->start_time;
+		i++;
+	}
+	pthread_mutex_unlock(&data->meal_mutex);
+	return (0);
+}
+
+/**
  * @brief Start the philosophers simulation.
  *
  * This function initializes the simulation start time, creates a
@@ -65,15 +97,7 @@ static int	start_simulation(t_data *data)
 	int			i;
 	pthread_t	monitor;
 
-	data->start_time = get_time();
-	pthread_mutex_lock(&data->meal_mutex);
-	i = 0;
-	while (i < data->num_philos)
-	{
-		data->philos[i].last_meal_time = data->start_time;
-		i++;
-	}
-	pthread_mutex_unlock(&data->meal_mutex);
+	meal_simulation(data);
 	i = 0;
 	while (i < data->num_philos)
 	{
